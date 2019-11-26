@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				/*为元素设定的宽度和高度决定了元素的边框盒。
+				 * 就是说，为元素指定的任何内边距和边框都将在已设定的宽度和高度内进行绘制。
+				 * 通过从已设定的宽度和高度分别减去边框和内边距才能得到内容的宽度和高度。*/
+	
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+				overflow-x:hidden;
+				overflow-y:auto;
+			}
+			
+			.floatL{
+				float: left;
+			}
+			
+			.floatR{
+				float: right;
+			}
+			.clear-float:after{
+				content: '';
+				height: 0;
+				display: block;
+				clear: both;
+				overflow: hidden;
+
+			}
+			.phone{
+				width: 350px;
+				height: 713px;
+				margin: 0 auto;
+				background: url(img/phone.jpg) no-repeat;
+				background-size: contain;
+				padding: 87px 24px;
+			}
+			.bg{
+				width: 100%;
+				height: 100%;
+				background: #ffffff;
+				position: relative;
+			}
+			.title{
+				width: 100%;
+				line-height: 50px;
+				background: #01b2fe;
+				text-align: center;
+				color: #fff;
+			}
+			.foot{
+				width: 100%;
+				height: 50px;
+				line-height: 40px;
+				background: #dfdfdf;
+				text-align: center;
+				color: #fff;
+				position: absolute;
+				bottom: 0;
+				padding: 0 5px;
+			}
+			
+			img{
+				border-radius: 50%;
+				margin-top: 10px;
+			}
+			.choice-photo{
+				cursor: pointer;
+			}
+			input{
+				float: left;
+				margin-left: 10px;
+				height: 30px;
+				border-radius: 5px;
+				border: 1px solid #ababab;
+				margin-top: 10px;
+				width: 190px;
+				padding: 0 5px;
+			}
+			span.btn{
+				margin-left: 10px;
+				width: 50px;
+				height: 30px;
+				display: inline-block;
+				vertical-align: bottom;
+				border-radius: 5px;
+				border: 1px solid #ABABAB;
+				background-color: #fff;
+
+				line-height: 28px;
+				font-size: 12px;
+				cursor: pointer;
+				color: darkgray;
+				-moz-user-select: none;
+			
+			}
+			span.btn:active{
+				background-color: #ABABAB;
+				border: 1px solid #fff;
+				color: #fff;
+			}
+			.content{
+				padding: 0 10px;
+				max-height: 430px;
+				overflow: auto;
+
+			}
+			.boy-sentence{
+				max-width: 240px;
+				padding: 5px;
+				border: 1px solid #cecece;
+				display: block;
+				float: left;
+				margin-left: 10px;
+				margin-top: 10px;
+				line-height: 22px;
+				border-radius: 5px;
+				background-color: #EFEFF4;
+			}
+			.girl-sentence{
+				max-width: 240px;
+				padding: 5px;
+				border: 1px solid #cecece;
+				display: block;
+				float: right;
+				margin-right: 10px;
+				margin-top: 10px;
+				line-height: 22px;
+				border-radius: 5px;
+				background-color: #1A90F0;
+				color: #fff;
+			}
+
+			
+		</style>
+	</head>
+	<body>
+		<div id="phone" class="phone">
+			<div class="bg">
+				<div class="title">聊天记录</div>
+				<div id="content" class="content  clear-float">
+					<!--<div class="boy list clear-float">
+						<img class="show-photo floatL" src="img/photo1.jpg" width="30"/>
+						<p id="boy-box" class="boy-sentence"></p>
+					</div>
+					<div class="girl list clear-float">
+						<img class="show-photo floatR" src="img/photo1.jpg" width="30"/>
+						<p id='girl-box' class="gilr-sentence"></p>
+					</div>-->
+				</div>
+				<div class="foot">
+					<img id="choice" class="choice-photo floatL" src="img/photo1.jpg" width="30"/>
+					<input type="text" name="texts" id="texts" value="" />
+					<span id="btn" class="btn">发送</span>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			var oContent = document.getElementById('content');
+			var oChoice = document.getElementById('choice');	
+			var oTexts = document.getElementById('texts');
+			var oBtn = document.getElementById('btn');
+			/*var oGirlbox = document.getElementById('girl-box'); 
+			var oBoybox = document.getElementById('boy-box'); */
+			var sex_state = true;	//默认为ture：男
+			var now_sex = 0	;		//0为男；1为女；
+			var Bcount = 0;		//第几条信息标识男生
+			var Gcount = 0;		//第几条信息标识女生
+			
+			//人物切换
+			oChoice.onclick = function(){
+				if(sex_state){
+					oChoice.src = 'img/photo2.jpg';
+					now_sex = 1;
+					sex_state = false;
+//					console.log(now_sex);
+//					console.log(sex_state);
+				}else{
+					oChoice.src = 'img/photo1.jpg';
+					now_sex = 0;
+					sex_state = true;
+//					console.log(now_sex);
+//					console.log(sex_state);
+				}
+			}
+			//发布消息
+			oBtn.onclick = function(){
+				if(oTexts.value != ''){
+					if(now_sex == 0){
+						oContent.innerHTML += "<div class='boy list clear-float'>"
+											+ "<img class='show-photo floatL' src='img/photo1.jpg' width='30'/>"
+											+ "<p class='boy-sentence'></p>"
+											+ "</div>";
+						oContent.getElementsByClassName('boy-sentence')[Bcount].innerHTML = oTexts.value;
+						Bcount ++;
+						oTexts.value = '';
+					
+					}else{
+						oContent.innerHTML += "<div class='girl list clear-float'>"
+											+ "<img class='show-photo floatR' src='img/photo2.jpg' width='30'/>"
+											+ "<p class='girl-sentence'></p>"
+											+ "</div>";
+						oContent.getElementsByClassName('girl-sentence')[Gcount].innerHTML = oTexts.value;
+						Gcount ++;
+						oTexts.value = '';
+					}
+				}else{
+					alert('输入不能为空！');
+				}
+				//固定滚动条在容器的底部
+				oContent.scrollTop = oContent.scrollHeight;
+			};
+			
+		</script>
+		
+	</body>
+</html>
